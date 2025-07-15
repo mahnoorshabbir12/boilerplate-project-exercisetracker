@@ -6,13 +6,13 @@ const mongoose = require("mongoose");
 
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ Connected to MongoDB"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 app.use(cors());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json()); // ✅ Ensure req.body is parsed
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
@@ -82,7 +82,7 @@ const exerciseRouteWithoutLog = async (req, res) => {
     const exercise = await Exercise.create({
       userId: _id,
       description,
-      duration: parseInt(duration), // ✅ Ensure number
+      duration: parseInt(duration), 
       date: date ? new Date(date) : new Date()
     });
 
@@ -133,6 +133,7 @@ const exerciseRouteWithLog = async (req, res) => {
 
     const pipeline = [
       { $match: matchQuery },
+      // {$match : user._id}
       {
         $project: {
           _id: 0,
